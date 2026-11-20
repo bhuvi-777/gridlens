@@ -1,5 +1,6 @@
 # GridLens
 
+[![PyPI](https://img.shields.io/pypi/v/gridlens)](https://pypi.org/project/gridlens/)
 [![CI](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml/badge.svg)](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml)
 [![License](https://img.shields.io/github/license/bhuvi-777/gridlens)](LICENSE)
 
@@ -12,10 +13,12 @@ Vendor-neutral Python power-quality analysis, standards checks, and reports from
 From a clone of this repository, run these three commands:
 
 ```powershell
-python -m pip install -e ".[dev]"
+pip install gridlens
 gridlens generate demo.csv --duration 60 --harmonic 5=0.04
 gridlens analyze demo.csv --interval 10 --report report.html
 ```
+
+For COMTRADE files, install the optional extra with `pip install "gridlens[comtrade]"`.
 
 The generated report is indicative for this short demo recording. For a full
 assessment, use an appropriately long recording and verify results against the
