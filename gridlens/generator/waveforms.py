@@ -20,7 +20,7 @@ def sine_wave(freq=50.0, rms=230.0, fs=10_000.0, duration=0.2,
     -------
     t, signal : two numpy arrays
     """
-    t = np.arange(int(round(fs * duration))) / fs
+    t = np.arange(round(fs * duration)) / fs
     peak = rms * np.sqrt(2)
     signal = np.sin(2 * np.pi * freq * t + phase)
     for order, ratio in (harmonics or {}).items():

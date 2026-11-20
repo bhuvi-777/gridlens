@@ -15,7 +15,7 @@ def thd(signal, fs, f0=50.0, max_harmonic=50):
     df = fs / x.size  # frequency resolution
 
     def magnitude(order):
-        return spectrum[int(round(order * f0 / df))]
+        return spectrum[round(order * f0 / df)]
 
     top = min(max_harmonic, int((fs / 2) // f0))
     fundamental = magnitude(1)
