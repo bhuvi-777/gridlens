@@ -52,6 +52,11 @@ def check_en50160(
     events: Iterable | None = None,
 ) -> ComplianceResult:
     """Check ten-minute interval voltage, frequency, THD and harmonics."""
+    if len(intervals) == 0:
+        raise ValueError(
+            "Recording is too short to produce a complete analysis window; "
+            "no compliance result can be reported"
+        )
     interval_s = _interval_duration(intervals)
     notes: list[str] = []
     if interval_s != 600.0:

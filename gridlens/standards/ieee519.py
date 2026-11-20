@@ -21,6 +21,11 @@ def check_ieee519_voltage(
     bus_voltage_kv: float,
 ) -> ComplianceResult:
     """Check 95th-percentile voltage individual harmonic and THD limits."""
+    if len(intervals) == 0:
+        raise ValueError(
+            "Recording is too short to produce a complete analysis window; "
+            "no compliance result can be reported"
+        )
     if bus_voltage_kv <= 1:
         bus_class = "<=1 kV"
     elif bus_voltage_kv <= 69:
