@@ -1,0 +1,15 @@
+---
+name: Bug report
+about: Report a reproducible GridLens problem
+labels: bug
+---
+
+## Description
+
+## Steps to reproduce
+
+## Expected behavior
+
+## Actual behavior
+
+## Environment

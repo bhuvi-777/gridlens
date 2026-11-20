@@ -52,12 +52,35 @@ wave = load_csv("capture.csv", voltage_col="v", current_col="i", fs=10_000)
 - [x] Synthetic waveform generator
 - [x] RMS, THD, active/reactive/apparent power, power factor
 - [x] CSV loader
-- [ ] Sag, swell and interruption detection
-- [ ] EN 50160 and IEEE 519 compliance checks
+- [x] Sag, swell and interruption detection
+- [x] EN 50160 and IEEE 519 voltage compliance checks
 - [ ] Indian grid code limits
-- [ ] COMTRADE loading (via `python-comtrade`)
-- [ ] HTML/PDF compliance reports
-- [ ] Command-line tool and web UI
+- [x] COMTRADE loading (optional `comtrade`)
+- [x] HTML compliance reports
+- [x] Command-line tool
+- [ ] PDF report and web UI
+
+## Analyze a file
+
+```powershell
+gridlens analyze capture.csv --standard en50160 --nominal 230 --freq 50
+gridlens analyze capture.csv --standard ieee519 --bus-kv 11 --report report.html
+gridlens generate demo.csv --duration 60 --rms 230 --harmonic 5=0.06
+```
+
+Generate a demo CSV, then analyze it. Use `python -m gridlens --help` if the
+console script is not on `PATH`.
+
+## Standards supported
+
+| Standard | Status |
+| --- | --- |
+| EN 50160 | Implemented for LV voltage, frequency, THD and harmonics |
+| IEEE 519-2014/2022 | Voltage distortion implemented; current TDD planned |
+| India CEA/grid code | Planned; limits are not implemented |
+
+> Engineering guidance only. Compliance claims must be verified against the
+> official standard text and edition, applicable system scope, and certified instruments.
 
 ## Contributing
 

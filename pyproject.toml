@@ -1,14 +1,18 @@
 [project]
 name = "gridlens"
-version = "0.1.0"
+version = "0.2.0"
 description = "Open-source power quality analysis toolkit"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 dependencies = ["numpy", "scipy", "pandas", "matplotlib"]
 
 [project.optional-dependencies]
+comtrade = ["comtrade"]
 dev = ["pytest", "ruff"]
+
+[project.scripts]
+gridlens = "gridlens.cli:main"
 
 [build-system]
 requires = ["setuptools>=61"]
@@ -16,3 +20,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["gridlens*"]
+
+[tool.setuptools.package-data]
+gridlens = ["py.typed"]

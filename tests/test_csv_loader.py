@@ -27,6 +27,7 @@ def test_load_csv_with_current_and_fs(tmp_path):
     wave = load_csv(path, voltage_col="v", current_col="i", fs=10_000)
 
     assert wave.fs == pytest.approx(10_000)
+    assert wave.current is not None
     assert np.allclose(wave.current, i)
 
 
