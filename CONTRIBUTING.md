@@ -2,25 +2,40 @@
 
 ## Setup
 
-Windows PowerShell:
+Use Python 3.10 or later.
+
+### Windows PowerShell
 
 ```powershell
-python -m venv .venv
-.\\.venv\\Scripts\\Activate.ps1
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install -e ".[dev]"
 ruff check .
 pytest
 ```
 
-Linux:
+### Linux or macOS
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e ".[dev]"
 ruff check .
 pytest
 ```
+
+## Open a pull request
+
+1. Fork the repository and clone your fork.
+2. Create a focused branch, for example `git switch -c fix/describe-the-change`.
+3. Make the change and add or update tests and documentation as needed.
+4. Run `ruff check .` and `pytest` from the activated environment.
+5. Push your branch and open a pull request against `main`. Describe the
+   change, link the related issue, and include the exact validation commands.
+6. Respond to review feedback and update your branch.
+
+**Pull requests must pass the GitHub Actions CI checks before they can be
+merged.** CI runs Ruff and pytest on Python 3.10, 3.12, and 3.13.
 
 ## Add a loader
 
@@ -44,6 +59,7 @@ as `None` with a TODO.
 
 - [ ] Tests are deterministic and pass
 - [ ] `ruff check .` passes
+- [ ] GitHub Actions CI is green on all supported Python versions
 - [ ] Public functions have type hints and NumPy-style docstrings
 - [ ] Standard values cite edition/table/clause metadata
 - [ ] Documentation and examples are updated

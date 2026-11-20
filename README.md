@@ -1,31 +1,33 @@
 # GridLens
 
-![tests](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml/badge.svg)
+[![CI](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml/badge.svg)](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml)
+[![License](https://img.shields.io/github/license/bhuvi-777/gridlens)](LICENSE)
 
-**Vendor-neutral power quality analysis for Python.**
-Load voltage and current waveforms, compute metrics, and (soon) check them
-against standards like EN 50160 and IEEE 519, including Indian grid codes.
+![GridLens HTML compliance report screenshot](docs/images/report-preview.png)
 
-> Status: early development. The core metrics work; standards checks and
-> reports are next. Contributions are welcome.
+Vendor-neutral Python power-quality analysis, standards checks, and reports from waveform files.
 
-## Why
+## Quickstart
 
-Power quality software is mostly tied to one instrument brand, and general
-tools like MATLAB need you to rebuild the same loaders, limits and reports
-every time. GridLens aims to be a free, scriptable layer that works on data
-from any source.
+From a clone of this repository, run these three commands:
 
-## Install
-
-```bash
-git clone https://github.com/bhuvi-777/gridlens.git
-cd gridlens
-pip install -e ".[dev]"
-pytest
+```powershell
+python -m pip install -e ".[dev]"
+gridlens generate demo.csv --duration 60 --harmonic 5=0.04
+gridlens analyze demo.csv --interval 10 --report report.html
 ```
 
-## Quick example
+The generated report is indicative for this short demo recording. For a full
+assessment, use an appropriately long recording and verify results against the
+official standard and certified instruments.
+
+## Why GridLens?
+
+Power-quality tools are often tied to a particular instrument. GridLens aims
+to provide a free, scriptable layer for analyzing waveform data from multiple
+sources, with reusable metrics, event detection, standards checks, and reports.
+
+## Python example
 
 ```python
 from gridlens.generator import sine_wave
@@ -65,11 +67,7 @@ wave = load_csv("capture.csv", voltage_col="v", current_col="i", fs=10_000)
 ```powershell
 gridlens analyze capture.csv --standard en50160 --nominal 230 --freq 50
 gridlens analyze capture.csv --standard ieee519 --bus-kv 11 --report report.html
-gridlens generate demo.csv --duration 60 --rms 230 --harmonic 5=0.06
 ```
-
-Generate a demo CSV, then analyze it. Use `python -m gridlens --help` if the
-console script is not on `PATH`.
 
 ## Standards supported
 
@@ -84,8 +82,8 @@ console script is not on `PATH`.
 
 ## Contributing
 
-Issues and pull requests are welcome. Run `ruff check .` and `pytest`
-before opening a PR.
+Issues and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
+for setup and contribution steps. Pull requests must pass CI before merging.
 
 ## License
 

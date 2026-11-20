@@ -8,8 +8,16 @@ labels: bug
 
 ## Steps to reproduce
 
+1.
+2.
+3.
+
 ## Expected behavior
 
 ## Actual behavior
 
-## Environment
+## GridLens version and environment
+
+## Sample input
+
+Use synthetic or sanitized data only. Do not attach confidential recordings.
