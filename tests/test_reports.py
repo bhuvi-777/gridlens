@@ -1,7 +1,9 @@
+import numpy as np
 import pandas as pd
 
-from gridlens.reports import build_report, write_report
+from gridlens.reports import build_report, html_report, write_report
 from gridlens.standards.base import Check, ComplianceResult
+from gridlens.waveform import Waveform
 
 
 def test_html_report_escape_and_write(tmp_path):
@@ -33,3 +35,24 @@ def test_html_report_with_intervals(tmp_path):
     })
     html = build_report(result, intervals=intervals)
     assert "FAIL" in html
+
+
+def test_waveform_figure_zooms_into_first_0_2_seconds(monkeypatch):
+    t = np.arange(600_000) / 10_000
+    wave = Waveform(t=t, voltage=np.sin(2 * np.pi * 50 * t))
+    captured = {}
+
+    def capture_figure(figure):
+        captured["time"] = figure.axes[0].lines[0].get_xdata()
+        captured["xlabel"] = figure.axes[0].get_xlabel()
+        html_report.plt.close(figure)
+        return ""
+
+    monkeypatch.setattr(html_report, "_figure_png", capture_figure)
+
+    html_report._wave_figure(wave)
+
+    assert captured["time"][0] == 0
+    assert captured["time"][-1] <= 0.2
+    assert captured["time"][-1] > 0.19
+    assert captured["xlabel"] == "Time (s), first 0.2 s"

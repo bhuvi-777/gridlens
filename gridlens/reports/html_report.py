@@ -27,9 +27,21 @@ def _figure_png(figure) -> str:
 
 def _wave_figure(wave: Waveform) -> str:
     figure, axis = plt.subplots(figsize=(8, 3))
-    step = max(1, len(wave.t) // 20_000)
-    axis.plot(wave.t[::step], wave.voltage[::step], label="Voltage")
-    axis.set_xlabel("Time (s)")
+    window_end = wave.t[0] + 0.2 if wave.t.size else 0.0
+    window_stop = (
+        int(np.searchsorted(wave.t, window_end, side="right"))
+        if wave.t.size
+        else 0
+    )
+    time = wave.t[:window_stop]
+    voltage = wave.voltage[:window_stop]
+    step = max(1, len(time) // 20_000)
+    axis.plot(time[::step], voltage[::step], label="Voltage")
+    axis.set_xlabel(
+        "Time (s), first 0.2 s"
+        if wave.t.size and wave.t[-1] - wave.t[0] > 0.2
+        else "Time (s)"
+    )
     axis.set_ylabel("Voltage (V)")
     axis.grid(True, alpha=0.3)
     return _figure_png(figure)
