@@ -6,3 +6,5 @@ __pycache__/
 examples/output/
 /examples/demo.csv
 /examples/report.html
+build/
+dist/
