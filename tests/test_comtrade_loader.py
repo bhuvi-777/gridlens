@@ -11,13 +11,18 @@ def test_comtrade_optional_loader(tmp_path: Path):
     dat = tmp_path / "sample.dat"
     cfg.write_text(
         "station,record,1999\n"
-        "1,1,60\n"
-        "1,1\n"
-        "VA1,Voltage, ,V,1.0,0.0,0.0,-32767,32767\n"
+        "1,1A,0D\n"
+        "1,VA1,,,V,1.0,0.0,0.0,-32767,32767,1.0,1.0,P\n"
+        "50\n"
         "1\n"
-        "50\n",
+        "1000,1\n"
+        "01/01/2020,00:00:00.000000\n"
+        "01/01/2020,00:00:00.000000\n"
+        "ASCII\n"
+        "1\n",
         encoding="ascii",
     )
-    dat.write_text("1,0,1000,0\n", encoding="ascii")
-    wave = load_comtrade(cfg)
+    dat.write_text("1,0,1000\n", encoding="ascii")
+    wave = load_comtrade(cfg, voltage_channel="VA1")
     assert wave.voltage.size > 0
+    assert wave.voltage[0] == 1000.0

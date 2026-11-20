@@ -11,15 +11,14 @@ from ..waveform import Waveform
 def _channel_index(comtrade_file: object, channel: str | int | None, prefix: str) -> int | None:
     if channel is None:
         return None
-    names = getattr(comtrade_file, "analog_channel_names", [])
-    ids = getattr(comtrade_file, "analog_channel_ids", [])
+    names = getattr(comtrade_file, "analog_channel_ids", [])
     if isinstance(channel, int):
         if channel < 0 or channel >= len(names):
             raise ValueError(f"{prefix} channel index {channel} is out of range")
         return channel
-    for index, value in enumerate([*names, *ids]):
+    for index, value in enumerate(names):
         if str(value).lower() == channel.lower():
-            return index if index < len(names) else index - len(names)
+            return index
     raise ValueError(f"{prefix} channel '{channel}' was not found")
 
 
@@ -45,7 +44,7 @@ def load_comtrade(
 
     reader = Comtrade()
     reader.load(str(cfg), str(dat))
-    names = list(getattr(reader, "analog_channel_names", []))
+    names = list(getattr(reader, "analog_channel_ids", []))
     voltage_index = _channel_index(reader, voltage_channel, "Voltage")
     current_index = _channel_index(reader, current_channel, "Current")
     if voltage_index is None:
@@ -57,13 +56,9 @@ def load_comtrade(
     if not names:
         raise ValueError("COMTRADE file contains no analog channels")
 
-    scales = getattr(reader, "analog_channel_scale_factors", [1.0] * len(names))
-    offsets = getattr(reader, "analog_channel_offsets", [0.0] * len(names))
     analog = getattr(reader, "analog", None)
     if analog is not None:
         raw = np.asarray(analog)
-        if raw.ndim == 2:
-            raw = raw.T
     else:
         raw_arrays = getattr(reader, "analog_channel_samples", None)
         if raw_arrays is None:
@@ -71,10 +66,7 @@ def load_comtrade(
         raw = np.asarray(raw_arrays)
 
     def engineering(index: int) -> np.ndarray:
-        values = np.asarray(raw[index], dtype=float)
-        scale = float(scales[index]) if index < len(scales) else 1.0
-        offset = float(offsets[index]) if index < len(offsets) else 0.0
-        return values * scale + offset
+        return np.asarray(raw[index], dtype=float)
 
     time = getattr(reader, "time", None)
     if time is None:
