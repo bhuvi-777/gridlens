@@ -1,9 +1,12 @@
 import pandas as pd
 
+from gridlens.analysis import compute_intervals
+from gridlens.generator import sine_wave
 from gridlens.standards import (
     check_en50160,
     check_ieee519_voltage,
 )
+from gridlens.waveform import Waveform
 
 
 def interval_frame(offset=1.0, thd=0.0, h5=0.0, count=100):
@@ -39,6 +42,20 @@ def test_harmonic_fails_with_order_name():
     result = check_en50160(interval_frame(h5=7.0))
     check = next(c for c in result.checks if c.name == "Harmonic h5")
     assert not check.passed
+
+
+def test_harmonic_at_limit_passes_despite_rounding_noise():
+    t, voltage = sine_wave(
+        rms=230.0, fs=10_000.0, duration=10.0, harmonics={5: 0.06}
+    )
+    intervals = compute_intervals(
+        Waveform(t=t, voltage=voltage), interval_s=10.0
+    )
+    result = check_en50160(intervals)
+    harmonic_check = next(c for c in result.checks if c.name == "Harmonic h5")
+
+    assert harmonic_check.measured == 6.0
+    assert harmonic_check.passed
 
 
 def test_ieee519_bus_classes():

@@ -24,6 +24,12 @@ def _fraction_within(values: np.ndarray, low: float, high: float) -> float:
     return float(np.mean((values >= low) & (values <= high)))
 
 
+def _at_or_below(value: float, limit: float) -> bool:
+    return value <= limit or bool(
+        np.isclose(value, limit, rtol=1e-12, atol=1e-12)
+    )
+
+
 def _interval_duration(intervals: pd.DataFrame) -> float:
     if "interval_s" in intervals.attrs:
         return float(intervals.attrs["interval_s"])
@@ -134,7 +140,7 @@ def check_en50160(
         percentile = float(np.percentile(
             intervals[column].to_numpy(dtype=float), 95
         ))
-        passed = limit is not None and percentile <= limit
+        passed = _at_or_below(percentile, limit)
         checks.append(
             Check(
                 f"Harmonic h{order}",
