@@ -23,3 +23,14 @@ def test_generate_distorted_and_bad_file(tmp_path):
     ]) == 0
     assert main(["analyze", str(csv_path), "--interval", "1"]) == 1
     assert main(["analyze", str(tmp_path / "missing.csv")]) == 2
+
+
+def test_analyze_recording_shorter_than_one_window(tmp_path, capsys):
+    csv_path = tmp_path / "short.csv"
+    assert main([
+        "generate", str(csv_path), "--duration", "0.1", "--fs", "10000",
+    ]) == 0
+    for standard in (["en50160"], ["ieee519", "--bus-kv", "0.4"]):
+        code = main(["analyze", str(csv_path), "--standard", *standard])
+        assert code == 2
+        assert "too short" in capsys.readouterr().err
