@@ -10,9 +10,9 @@ Vendor-neutral Python power-quality analysis, standards checks, and reports from
 
 ## Quickstart
 
-From a clone of this repository, run these three commands:
+Install from PyPI and try the demo:
 
-```powershell
+```bash
 pip install gridlens
 gridlens generate demo.csv --duration 60 --harmonic 5=0.04
 gridlens analyze demo.csv --interval 10 --report report.html
@@ -52,22 +52,9 @@ from gridlens.loaders import load_csv
 wave = load_csv("capture.csv", voltage_col="v", current_col="i", fs=10_000)
 ```
 
-## Roadmap
-
-- [x] Synthetic waveform generator
-- [x] RMS, THD, active/reactive/apparent power, power factor
-- [x] CSV loader
-- [x] Sag, swell and interruption detection
-- [x] EN 50160 and IEEE 519 voltage compliance checks
-- [ ] Indian grid code limits
-- [x] COMTRADE loading (optional `comtrade`)
-- [x] HTML compliance reports
-- [x] Command-line tool
-- [ ] PDF report and web UI
-
 ## Analyze a file
 
-```powershell
+```bash
 gridlens analyze capture.csv --standard en50160 --nominal 230 --freq 50
 gridlens analyze capture.csv --standard ieee519 --bus-kv 11 --report report.html
 ```
@@ -82,6 +69,31 @@ gridlens analyze capture.csv --standard ieee519 --bus-kv 11 --report report.html
 
 > Engineering guidance only. Compliance claims must be verified against the
 > official standard text and edition, applicable system scope, and certified instruments.
+
+## Roadmap
+
+- [x] Synthetic waveform generator
+- [x] RMS, THD, active/reactive/apparent power, power factor
+- [x] CSV loader
+- [x] Sag, swell and interruption detection
+- [x] EN 50160 and IEEE 519 voltage compliance checks
+- [ ] IEEE 519 current distortion (TDD)
+- [ ] Indian grid code limits
+- [x] COMTRADE loading (optional `comtrade`)
+- [x] HTML compliance reports
+- [x] Command-line tool
+- [ ] PDF report and web UI
+
+## Development
+
+To work on GridLens itself, install it from a clone in editable mode:
+
+```bash
+git clone https://github.com/bhuvi-777/gridlens.git
+cd gridlens
+pip install -e ".[dev]"
+pytest
+```
 
 ## Contributing
 
