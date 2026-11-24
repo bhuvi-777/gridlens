@@ -4,7 +4,7 @@
 [![CI](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml/badge.svg)](https://github.com/bhuvi-777/gridlens/actions/workflows/tests.yml)
 [![License](https://img.shields.io/github/license/bhuvi-777/gridlens)](LICENSE)
 
-![GridLens HTML compliance report screenshot](docs/images/report-preview.png)
+![GridLens HTML compliance report screenshot](https://raw.githubusercontent.com/bhuvi-777/gridlens/main/docs/images/report-preview.png)
 
 Vendor-neutral Python power-quality analysis, standards checks, and reports from waveform files.
 
