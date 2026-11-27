@@ -26,6 +26,8 @@ class Waveform:
 def resample(wave: Waveform, fs_new: float) -> Waveform:
     """Resample a waveform to a new sampling rate.
 
+    The resampled time axis starts at the first input timestamp.
+
     Parameters
     ----------
     wave : Waveform
@@ -43,7 +45,7 @@ def resample(wave: Waveform, fs_new: float) -> Waveform:
     up = ratio.numerator
     down = ratio.denominator
     t = np.arange(round(duration * fs_new) + 1) / fs_new
-    t = t[t <= duration]
+    t = wave.t[0] + t[t <= duration]
     voltage = resample_poly(wave.voltage, up, down)
     voltage = voltage[: t.size]
     current = None
